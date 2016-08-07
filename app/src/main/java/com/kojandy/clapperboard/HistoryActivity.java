@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class HistoryActivity extends AppCompatActivity {
     @Override
@@ -29,6 +30,7 @@ public class HistoryActivity extends AppCompatActivity {
                 });
             }
         });
-        listView.setAdapter(new Adapter(this, data));
+        listView.setAdapter(new Adapter(this, data.sort(new String[]{"scene", "cut", "take"},
+                new Sort[]{Sort.ASCENDING, Sort.ASCENDING, Sort.ASCENDING})));
     }
 }
