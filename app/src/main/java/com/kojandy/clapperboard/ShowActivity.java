@@ -17,11 +17,8 @@ public class ShowActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show);
 
         final AutoResizeTextView text = (AutoResizeTextView) findViewById(R.id.show_text);
-        String str = getIntent().getStringExtra("text");
-        String[] parse = str.split("-");
-        if (parse.length == 4) finalCam = Integer.parseInt(parse[3]);
-        else finalCam = 1;
-        final String num = parse[0] + "-" + parse[1] + "-" + parse[2];
+        final String num = getIntent().getStringExtra("num");
+        finalCam = getIntent().getIntExtra("camera", 1);
         if (finalCam == 1) text.setText(num);
         else text.setText(num + "-" + currentCam);
         text.setOnClickListener(new View.OnClickListener() {
