@@ -15,11 +15,14 @@ import io.realm.Realm;
 import io.realm.Sort;
 
 public class MainActivity extends AppCompatActivity {
+    Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        realm = Realm.getDefaultInstance();
 
         final Button btnSet = (Button) findViewById(R.id.main_btn_set);
         final Button btnShow = (Button) findViewById(R.id.main_btn_show);
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Data data;
                     try {
-                        data = Realm.getDefaultInstance().where(Data.class)
+                        data = realm.where(Data.class)
                                 .equalTo("scene", Integer.parseInt(txtScene.getText().toString()))
                                 .equalTo("cut", txtCut.getText().toString())
                                 .findAll().sort("take", Sort.DESCENDING).first();
@@ -101,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!btnSet.isEnabled()) {
-                    Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+                    realm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
                             Data data = realm.createObject(Data.class);
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!btnSet.isEnabled()) {
-                    Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+                    realm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
                             Data data = realm.createObject(Data.class);
@@ -143,5 +146,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, HistoryActivity.class));
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 }
