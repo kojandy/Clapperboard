@@ -15,7 +15,7 @@ import io.realm.Realm;
 import io.realm.Sort;
 
 public class MainActivity extends AppCompatActivity {
-    Realm realm;
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
