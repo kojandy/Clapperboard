@@ -144,9 +144,15 @@
         android:id="@+id/main_btn_show"
         android:layout_gravity="center_horizontal" />
 
-    <Space
-        android:layout_width="10dp"
-        android:layout_height="10dp" />
+    <TextView
+        android:visibility="invisible"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RECORDING"
+        android:id="@+id/main_txt_rec"
+        android:textColor="#FF0000"
+        android:textStyle="bold"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -167,4 +173,5 @@
             android:id="@+id/main_btn_next" />
 
     </LinearLayout>
+
 </LinearLayout>

@@ -17,6 +17,8 @@ import io.realm.Sort;
 public class MainActivity extends AppCompatActivity {
     private Realm realm;
 
+    private boolean isRecording = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText txtCam = (EditText) findViewById(R.id.main_txt_cam);
 
         final TextView txtTake = (TextView) findViewById(R.id.main_txt_take);
+        final TextView txtRec = (TextView) findViewById(R.id.main_txt_rec);
 
         txtCut.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -86,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
                 txtCut.setText("");
                 txtTake.setText("0");
                 txtCam.setText("");
+                isRecording = false;
+                txtRec.setVisibility(View.INVISIBLE);
             }
         });
         btnShow.setOnClickListener(new View.OnClickListener() {
@@ -97,13 +102,19 @@ public class MainActivity extends AppCompatActivity {
                             + txtCut.getText().toString() + "-" + txtTake.getText().toString());
                     it.putExtra("camera", Integer.parseInt(txtCam.getText().toString()));
                     startActivity(it);
+                    isRecording = true;
+                    txtRec.setVisibility(View.VISIBLE);
                 } else Toast.makeText(MainActivity.this, "Set 눌러", Toast.LENGTH_SHORT).show();
             }
         });
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!btnSet.isEnabled()) {
+                if (btnSet.isEnabled())
+                    Toast.makeText(MainActivity.this, "Set 눌러", Toast.LENGTH_SHORT).show();
+                else if (!isRecording)
+                    Toast.makeText(MainActivity.this, "아직 슬레이트 안 침", Toast.LENGTH_SHORT).show();
+                else {
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
@@ -117,13 +128,17 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                     btnCancel.performClick();
-                } else Toast.makeText(MainActivity.this, "Set 눌러", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!btnSet.isEnabled()) {
+                if (btnSet.isEnabled())
+                    Toast.makeText(MainActivity.this, "Set 눌러", Toast.LENGTH_SHORT).show();
+                else if (!isRecording)
+                    Toast.makeText(MainActivity.this, "아직 슬레이트 안 침", Toast.LENGTH_SHORT).show();
+                else {
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
@@ -137,7 +152,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                     txtTake.setText(String.valueOf(Integer.parseInt(txtTake.getText().toString()) + 1));
-                } else Toast.makeText(MainActivity.this, "Set 눌러", Toast.LENGTH_SHORT).show();
+                    isRecording = false;
+                    txtRec.setVisibility(View.INVISIBLE);
+                }
             }
         });
         btnHistory.setOnClickListener(new View.OnClickListener() {
