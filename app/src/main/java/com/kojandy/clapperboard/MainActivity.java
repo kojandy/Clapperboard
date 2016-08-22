@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import io.realm.Sort;
 
 public class MainActivity extends AppCompatActivity {
@@ -177,7 +178,28 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_main_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                StringBuilder stringBuilder = new StringBuilder();
+                RealmResults<Data> datas = realm.where(Data.class).findAllSorted(new String[]{"scene", "cut", "take"},
+                        new Sort[]{Sort.ASCENDING, Sort.ASCENDING, Sort.ASCENDING});
+                for (Data data : datas) {
+                    stringBuilder
+                            .append(data.scene)
+                            .append("-")
+                            .append(data.cut)
+                            .append("-")
+                            .append(data.take)
+                            .append("-")
+                            .append(data.camera)
+                            .append(":")
+                            .append(data.isOk)
+                            .append(":")
+                            .append(data.note)
+                            .append('\n');
+                }
+                Intent mIntent = new Intent(Intent.ACTION_SEND);
+                mIntent.setType("text/plain");
+                mIntent.putExtra(Intent.EXTRA_TEXT, stringBuilder.toString());
+                startActivity(Intent.createChooser(mIntent, "공유"));
                 break;
         }
         return super.onOptionsItemSelected(item);
