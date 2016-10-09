@@ -2,6 +2,10 @@
 Clapperboard is an Android app for taking and managing shot logs.  
 Made for Eunmak, the filmmaking club in KAIST.
 
+## Credits
+- Jungsu Wee
+    - For his beautiful app icon and illustrations
+
 ## License
     MIT License
 
